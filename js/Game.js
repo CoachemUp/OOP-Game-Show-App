@@ -19,9 +19,8 @@ class Game {
      *********************************************************************/
     startGame() {
         document.getElementById("overlay").style.display = "none";
-        const startPhrase = this.getRandomPhrase();
-        this.activePhrase = startPhrase;
-        startPhrase.addPhraseToDisplay();
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addPhraseToDisplay();
     }
     /**
      * Selects random phrase from phrases property
@@ -56,12 +55,12 @@ class Game {
     removeLife() {
         const matchLetter = this.activePhrase.checkLetter();
         if (matchLetter != true) {
-            const attempts = document.querySelectorAll("img");
-            attempts[this.missed].src = "../images/lostHeart.png";
+            const attempts = document.querySelectorAll(".tries");
+            attempts[this.missed].firstChild.src = "images/lostHeart.png";
             this.missed++;
         }
         if (this.missed > 4) {
-            this.gameOver();
+            this.gameOver(false);
         }
     }
     /**
@@ -87,37 +86,10 @@ class Game {
         const win = document.getElementById("overlay");
         if (gameWon) {
             win.className = "win";
-            endMessage.innerHTML = `You WON! Good Job!`;
+            endMessage.innerHTML = `You WON! Good Job!`;    
         } else {
             win.className = "lose";
             endMessage.innerHTML = `You LOST! Try Again?`;
         }
-        //eventlistener to call the resetGame method and starts a new game
-        document.getElementById('btn__reset').addEventListener("click", () => {
-            this.resetGame();
-            this.startGame();
-        });
-    }
-
-    /**
-     * resets the game board to play another game
-     * removes all li elements
-     * updates the class of the onscreen keyboard
-     * resets all the heart images to liveheart.png
-     *****************************************************************************/
-
-    resetGame() {
-        const phraseList = document.getElementById('phrase').children[0];
-        phraseList.innerHTML = '';
-        const key = document.getElementsByClassName('key');
-        for (let i = 0; i < key.length; i++) {
-            key[i].disabled = false;
-            key[i].className = 'key';
-        }
-        const heart = document.querySelectorAll('img');
-
-        for (let i = 0; i < heart.length; i++) {
-            heart[i].src = '../images/liveHeart.png';
-        }
-    }
+    }  
 }
